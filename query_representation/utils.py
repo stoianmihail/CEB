@@ -5,7 +5,7 @@ import time
 import networkx as nx
 import itertools
 import hashlib
-import psycopg2 as pg
+# import psycopg2 as pg
 import shelve
 import pdb
 import os
@@ -662,7 +662,8 @@ def order_to_from_clause(join_graph, join_order, alias_mapping):
             # bottom-level joins.
             sg = join_graph.subgraph(rels)
             sql = nx_graph_to_query(sg)
-            con = pg.connect(user="ubuntu", host="localhost", database="imdb")
+            con = None# pg.connect(user="ubuntu", host="localhost", database="imdb")
+            assert 0
             cursor = con.cursor()
             # cursor.execute(f"explain (format json) {sql}")
             cursor.execute("explain (format json) {}".format(sql))
@@ -1190,8 +1191,9 @@ def execute_query(sql, user, db_host, port, pwd, db_name, pre_execs):
     @pre_execs: options like set join_collapse_limit to 1 that are executed
     before the query.
     '''
-    con = pg.connect(user=user, host=db_host, port=port,
-            password=pwd, database=db_name)
+    con = None#connect(user=user, host=db_host, port=port,
+            # password=pwd, database=db_name)
+    assert 0
     cursor = con.cursor()
 
     for setup_sql in pre_execs:
@@ -1378,8 +1380,10 @@ def cached_execute_query(sql, user, db_host, port, pwd, db_name,
     start = time.time()
 
     os_user = getpass.getuser()
-    con = pg.connect(user=user, host=db_host, port=port,
-            password=pwd, database=db_name)
+    con = None
+    # con = pg.connect(user=user, host=db_host, port=port,
+            # password=pwd, database=db_name)
+    assert 0
     cursor = con.cursor()
     if timeout is not None:
         cursor.execute("SET statement_timeout = {}".format(timeout))
